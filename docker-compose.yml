@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+
+  ghost:
+    image: ghost:latest
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - ${PORT_MAPPING}
+    environment:
+      url: ${URL}
+      NODE_ENV: ${ENV}
+      database__client: ${DB_CLIENT}
+      database__connection__host: ${DB_HOST}
+      database__connection__user: ${DB_USER}
+      database__connection__password: ${DB_PASSWORD}
+      database__connection__database: ${DB_DATABASE}
+    volumes:
+      - ghost:/var/lib/ghost/content
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  ghost:
+  mysql:
